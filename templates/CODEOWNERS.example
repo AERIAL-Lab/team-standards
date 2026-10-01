@@ -1,0 +1,8 @@
+# 模板：复制到目标仓库 .github/CODEOWNERS（没有扩展名）
+# 将 your-org 替换为真实组织名，并创建 reviewers 团队。
+# 团队成员由管理员维护，按审核需求调整；团队须可见并显式拥有仓库 write 权限。
+# 所有文件统一交给审核组，包括本文件和 CI 配置。
+# 在 GitHub 开启至少一次批准及 Require review from Code Owners，并使保护对管理员生效。
+# 每个 PR 由至少一名非作者团队成员批准；启用撤销过期审批，改动内容变化后重新批准。
+# 完整平台配置见 setup-checklist.md。
+* @your-org/reviewers

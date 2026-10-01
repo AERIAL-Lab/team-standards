@@ -1,0 +1,7 @@
+# 规范仓库使用；复制到其他规范仓库时更新 Discussions 地址。
+# 普通项目不要复制仓库申请表单。安全问题按 SECURITY.md 私下报告。
+blank_issues_enabled: false
+contact_links:
+  - name: 交流 / 求助 / 规范讨论
+    url: https://github.com/AERIAL-Lab/team-standards/discussions
+    about: 一般问题和开放讨论请进入 Discussions；具体修改确认后再建立 Issue 并关联 PR。

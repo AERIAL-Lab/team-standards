@@ -1,0 +1,35 @@
+# 仅练习仓库：复制到 .github/workflows/practice-ci.yml。
+# 练习示例，启用前验证；不代替项目测试。
+name: Practice
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  profile-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: false
+      - name: Check practice profiles
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          files = list(Path('profiles').glob('*.md'))
+          errors = []
+          if not files:
+              errors.append('没有 profiles/*.md，请先准备示例或个人介绍。')
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              for field in ('昵称：', '想练习：'):
+                  if not any(line.startswith(field) and line[len(field):].strip()
+                             for line in text.splitlines()):
+                      errors.append(f'{str(path)!r} 缺少有内容的 {field}')
+          for error in errors:
+              print(error)
+          raise SystemExit(1 if errors else 0)
+          PYCODE

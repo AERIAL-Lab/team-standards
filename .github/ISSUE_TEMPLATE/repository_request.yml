@@ -1,0 +1,57 @@
+name: 仓库申请
+description: 为新项目申请组织仓库
+title: "[仓库申请] "
+body:
+  - type: markdown
+    attributes:
+      value: 请说明项目用途和负责人。一般交流请到 Discussions；项目开发任务请在对应项目仓库提交。
+  - type: input
+    id: repository_name
+    attributes:
+      label: 建议仓库名
+      description: 使用小写英文和连字符，名称应能表达用途。
+      placeholder: example-service
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: 项目用途与预期交付
+      description: 解决什么问题？准备交付什么？
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: 项目负责人
+      description: 填写负责维护和接收通知的 GitHub 用户名。
+    validations:
+      required: true
+  - type: textarea
+    id: participants
+    attributes:
+      label: 参与成员与协作需要
+      description: 参与者或团队、需要什么协作权限；尚未确定可说明。
+    validations:
+      required: false
+  - type: textarea
+    id: boundary
+    attributes:
+      label: 为什么需要独立仓库
+      description: 是否检查过已有仓库？为什么不适合放在那里？
+    validations:
+      required: true
+  - type: textarea
+    id: publication
+    attributes:
+      label: 公开条件与外部内容
+      description: 组织仓库公开。说明内容能否公开，以及外部代码、数据或素材的来源和授权情况；没有则写无，待确认的地方请明确列出。
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: 初始化需要
+      description: 技术栈、已有代码、所需模板或其他要求；没有可留空。不需要填写设备配置或密钥。
+    validations:
+      required: false

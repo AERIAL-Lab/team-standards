@@ -1,0 +1,42 @@
+# Node + Jest 示例：复制到 .github/workflows/ci-node.yml。
+# 要求 package-lock.json 及 lint、test:coverage、licenses:ci 脚本。
+# 启用前验证项目依赖、脚本和检查结果；接入步骤见 ci-setup.md。
+name: Node CI
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  node-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run lint
+      - name: Test and generate Cobertura report
+        run: npm run test:coverage
+      - name: Check incremental coverage
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          COVERAGE_THRESHOLD: '70'
+        run: |
+          test -s coverage/cobertura-coverage.xml
+          python -m pip install 'diff-cover==9.2.4'
+          diff-cover coverage/cobertura-coverage.xml \
+            --compare-branch="$BASE_SHA" --fail-under="$COVERAGE_THRESHOLD"
+      - name: Report dependency licenses for human review
+        run: npm run licenses:ci
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
