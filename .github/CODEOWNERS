@@ -1,0 +1,3 @@
+# 所有文件统一交给审核组。完整平台配置见 setup-checklist.md。
+# 当前未启用 Require review from Code Owners；如需强制，请在仓库 Ruleset 中开启。
+* @AERIAL-Lab/reviewers

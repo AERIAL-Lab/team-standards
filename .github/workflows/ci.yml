@@ -1,0 +1,61 @@
+# 通用基线：复制到 .github/workflows/ci.yml，接入前读 ci-setup.md。
+# 模板需按目标仓库验证后启用；Node 项目可另加 ci-node.yml。
+name: CI
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  repository-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Block changed files over 1 MiB
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import os, re, subprocess
+          base = os.environ['BASE_SHA']
+          if not re.fullmatch(r'[0-9a-fA-F]{40,64}', base):
+              raise SystemExit('无有效 PR 基线提交，停止检查。')
+          def git(*args):
+              return subprocess.check_output(['git', *args])
+          changed = set(git('diff', '--name-only', '-z', '--diff-filter=ACMR',
+                            f'{base}...HEAD', '--').split(b'\0'))
+          oversized = []
+          # 从 Git 对象读取大小，不把文件名当命令，不跟随工作区符号链接。
+          for entry in git('ls-tree', '-r', '-l', '-z', 'HEAD').split(b'\0'):
+              if not entry:
+                  continue
+              metadata, path = entry.split(b'\t', 1)
+              mode, kind, oid, size = metadata.split()
+              if path in changed and kind == b'blob' and int(size) > 1048576:
+                  oversized.append((path, int(size)))
+          for path, size in oversized:
+              print(f'文件超限：{os.fsdecode(path)!r} ({size} bytes)')
+          raise SystemExit(1 if oversized else 0)
+          PYCODE
+      - name: Scan PR commits for secrets
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        shell: bash
+        run: |
+          # CLI 容器不需要 gitleaks-action 的组织许可证。
+          # 完整版本为示例，启用前复核版本并固定镜像 digest。
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/repo:ro" \
+            -e GIT_CONFIG_COUNT=1 \
+            -e GIT_CONFIG_KEY_0=safe.directory \
+            -e GIT_CONFIG_VALUE_0=/repo \
+            ghcr.io/gitleaks/gitleaks:v8.24.2 \
+            git /repo --redact --log-opts="$BASE_SHA..HEAD"
