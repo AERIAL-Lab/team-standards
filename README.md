@@ -26,7 +26,10 @@
 ├── licensing-guide.md      # 许可证说明
 ├── ci-setup.md             # CI 模板接入说明
 ├── setup-checklist.md      # 管理员接入清单
-├── .github/                # 本仓库使用的 Issue / PR 模板，也供其他仓库复制
+├── LICENSE                 # 许可证（MIT）
+├── SECURITY.md             # 安全问题私下报告方式
+├── .gitignore              # 忽略规则
+├── .github/                # Issue / PR 模板、CODEOWNERS、CI 工作流
 └── templates/              # CI、CODEOWNERS 等示例，复制映射见落地清单
 ```
 
