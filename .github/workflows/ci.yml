@@ -1,5 +1,5 @@
-# 通用基线：复制到 .github/workflows/ci.yml，接入前读 ci-setup.md。
-# 模板需按目标仓库验证后启用；Node 项目可另加 ci-node.yml。
+# 本仓库基线检查：变更文件大小与 PR 提交中的疑似密钥。
+# 通用模板见 templates/ci.yml，接入说明见 ci-setup.md。
 name: CI
 on:
   pull_request:
