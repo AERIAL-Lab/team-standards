@@ -29,8 +29,9 @@
 ## 3. 配置 GitHub
 
 - 仓库 Public，按需给项目成员分支写权限；组织管理、删除和改权限仅交给管理员。
-- main 要求 PR、至少一名 Code Owner 批准、必要检查通过；保护对管理员生效，禁止 force push 和删除 main。
-- 启用 Dismiss stale pull request approvals when new commits are pushed（改动变化后撤销旧批准）；PR 改动内容变化后，由审核组中非作者成员重新批准。
+- main 要求 PR、至少一名 Code Owner 批准、必要检查通过；禁止 force push 和删除 main。
+- 按需为审核组放宽：将 reviewers 团队加入 Ruleset 的 bypass（示例用 `bypass_mode=always`，成员可自行合并、直推或强推 main）；对其他成员上述保护照常生效。
+- 启用 Dismiss stale pull request approvals when new commits are pushed（改动变化后撤销旧批准）；PR 改动内容变化后，由审核组中非作者成员重新批准（审核组可自行合并）。
 - 必需检查要求分支与最新 main 保持同步（Require branches to be up to date before merging）；启用 Require conversation resolution before merging，合并前处理完审核讨论。
 - 仅允许 Squash merge，自动删除已合并分支。
 - 开启 Secret scanning / Push protection 和私有漏洞报告；Security 报告入口实际可用后发布 SECURITY.md。
