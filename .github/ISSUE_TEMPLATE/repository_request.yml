@@ -44,8 +44,8 @@ body:
   - type: textarea
     id: publication
     attributes:
-      label: 公开条件与外部内容
-      description: 组织仓库公开。说明内容能否公开，以及外部代码、数据或素材的来源和授权情况；没有则写无，待确认的地方请明确列出。
+      label: 可见性与外部内容
+      description: 仓库可见性按需选择（Public / Private），请说明期望的可见性及理由。若计划公开，说明内容能否公开，以及外部代码、数据或素材的来源和授权情况；没有则写无，待确认的地方请明确列出。
     validations:
       required: true
   - type: textarea
