@@ -1,68 +1,28 @@
-# 团队开发规范中心
+# 团队开发规范
 
-这里是本组织的 GitHub 使用规范、coding agent 使用规范与仓库模板的统一存放处。**组织协作规则以本仓库为准**；规则提议先在 Discussions 交流；形成具体修改后建立 Issue，并通过 PR 审核、记录。
+原则：**少流程、守底线、把重复劳动交给 AI。**
 
-设计目标：**以文档为中心、流程尽量轻、新手可上手、防止项目膨胀、防止 agent 误用。**
+## 记住这 4 条就能干活
 
-## 选择入口
+1. **不直推 `main`，改动走 PR**：拉分支干活，PR 统一用 **Squash and merge** 合并，合完删分支。
+2. **PR 分级合并**：
+   - **简单改动**（改文档、错别字、注释、微调样式/文案）→ 自检通过后**允许自己合并**。
+   - **涉及功能**（新功能、修 Bug、改逻辑/接口/依赖/配置）→ **不允许自己合并**，至少找 1 位其他成员 Approve 后再合。
+3. **鼓励用 AI 写代码、跑 Git，但人负责结果**：大致理解 Git 流程和需求边界后，实现、测试、提 PR 都可以交给 AI；提交前人要看过 diff、跑过验证，出问题自己兜底。
+4. **守住安全底线**：不提交密钥、Token、密码和 >1MB 的大文件；不把敏感信息贴进 AI 对话框。
 
-- **查规范**：按下方“从这里开始”阅读对应文档。
-- **申请仓库**：进入 Issues → New issue → **仓库申请**，填写独立申请表单。
-- **交流、求助和规范讨论**：进入仓库顶部 **Discussions**。
-- **练习 GitHub 操作**：在独立练习仓库按 [练习流程](practice-walkthrough.md) 操作，不在本仓库提交练习内容。
+---
 
-本仓库的 Issue 用于仓库申请，以及已明确的规范或模板缺陷、改进。项目开发任务在对应项目仓库跟踪；一般讨论不建立通用任务 Issue。
+## 文档导航
 
-## 仓库结构
+| 文档 | 给谁看 / 什么时候看 |
+|---|---|
+| [WORKFLOW.md](WORKFLOW.md) | **日常必读**：PR 分级合并、分支/Commit 习惯、AI 协作边界、验证要求 |
+| [GIT-CHEATSHEET.md](GIT-CHEATSHEET.md) | **Git 速查**：5 个核心概念 + 常用命令 + 让 AI 代劳 Git 的注意事项 |
+| [REPO-SETUP.md](REPO-SETUP.md) | **建新仓库时看**：新仓库最小配置清单与模板复制指引（平时不用看） |
+| [SECURITY.md](SECURITY.md) | 发现漏洞或密钥泄露时的私下处理方式 |
 
-```text
-├── git-github-basics.md      # Git / GitHub 入门
-├── practice-walkthrough.md   # 新人练习流程
-├── CONTRIBUTING.md          # 提交与审批
-├── agents-template-guide.md # AGENTS.md 通用模板使用说明
-├── coding-agent-guide.md    # AI 使用责任
-├── modular-testing.md      # 模块和测试
-├── repo-governance.md      # 仓库治理
-├── licensing-guide.md      # 许可证说明
-├── ci-setup.md             # CI 模板接入说明
-├── setup-checklist.md      # 管理员接入清单
-├── LICENSE                 # 许可证（MIT）
-├── SECURITY.md             # 安全问题私下报告方式
-├── .gitignore              # 忽略规则
-├── .github/                # Issue / PR 模板、CODEOWNERS、CI 工作流
-└── templates/              # CI、CODEOWNERS 等示例，复制映射见落地清单
-```
+## 开箱即用模板（`templates/`）
 
-> 使用方式：模板需根据项目接入并验证，再按 [落地清单](setup-checklist.md) 配置平台约束。人员名单、权限和运行结果在对应 GitHub 团队、仓库设置和检查记录中维护。
-
-## 从这里开始
-
-1. [Git 与 GitHub 新手需知](git-github-basics.md) — 零基础入门：Git 是什么、术语黑话、完整提交流程、常见问题
-2. [CONTRIBUTING.md](CONTRIBUTING.md) — 提交与审批流程细则：分支规范、commit 规范、PR 规则、自查清单
-3. [新人练习流程](practice-walkthrough.md) — 在练习仓库走一次完整协作
-4. [Coding Agent 使用规范](coding-agent-guide.md) — AI 使用责任和验证要求
-
-## 五条核心原则（记住这五句就够了）
-
-1. **一切改动走 PR，不许直推 main**（审核组在明确理解改动的前提下可直接推送或强推 main，见审批细则）。
-2. **小步提交**：一个 PR 只做一件事，尽量小（参考值 400 行，不定死——大了要说清为什么不能拆）。
-3. **卡住可以提前求助；一般改动通过必要检查并经审核组审核后合并；审核组以外的成员不能自行批准或合并自己的 PR。**
-4. **团队鼓励用 AI 写代码**——提交人要理解关键逻辑、检查最终改动、说明验证方法；不懂的关键部分找有经验的成员共同检查。
-5. **模块边界清晰、有说明，改动按项目类型提供适当验证。**
-
-## 三层结构（规范怎么落地）
-
-| 层 | 内容 | 约束方式 |
-|---|---|---|
-| 第一层：平台约束 | CODEOWNERS、分支保护、必要 CI 检查 | 配置后由平台强制；PR 模板辅助填写，内容由人检查 |
-| 第二层：规范文档 | 本仓库的文档集（git 流程、review、agent、测试、仓库治理） | PR 评审时引用 |
-| 第三层：新手辅助 | 每份文档末尾的自查 checklist | 提交前自查 |
-
-## 新仓库怎么落地
-
-组织下每一个新仓库创建时，从本仓库 `.github/` 复制适用的 Issue / PR 模板（普通项目不复制仓库申请表单，讨论链接按目标仓库调整），从 `templates/` 复制适用的其他模板，按 [落地清单](setup-checklist.md) 中的映射放到目标仓库的生效位置，并替换组织名、团队名和链接中的占位符，再把相关规范文档链接进新仓库的 README。`templates/` 仅保存模板，不会自动启用 GitHub 配置；分支保护、必需检查和审批要求仍须管理员在 GitHub Settings 中设置。组织仓库可见性按需选择 Public / Private。规范本身也走 PR 流程修改——对规范的开放讨论放在 Discussions；形成修改后关联 Issue 和 PR，保留决定与原因。
-
-
-## 给 AI 协作者使用
-
-各项目可复制 [AGENTS.md 模板](templates/AGENTS.md)，直接使用共同规则；有特殊约定时，按 [使用说明](agents-template-guide.md) 选补。共同规则保持系统与设备无关，项目命令在各自文档中维护。
+- [templates/PULL_REQUEST_TEMPLATE.md](templates/PULL_REQUEST_TEMPLATE.md) — 极简 PR 模板
+- [templates/AGENTS.md](templates/AGENTS.md) — AI 协作者通用约定，复制到项目根目录即可使用
